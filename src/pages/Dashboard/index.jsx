@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Table } from "react-bootstrap";
 import { KagukaButton } from "../../components/Button";
 import ComponentBreadCrumb from "../../components/BreadCrumb";
@@ -7,11 +7,6 @@ import ComponentBreadCrumb from "../../components/BreadCrumb";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/login" replace="true" />;
-  }
 
   return (
     <>

@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Container, Card } from "react-bootstrap";
 import AlertMessage from "../../components/Alert";
-import { useNavigate, Navigate } from "react-router-dom";
-import axios from "axios";
-import { config } from "../../config";
+import { useNavigate } from "react-router-dom";
 import { FormSignin } from "./form";
+import { postData } from "../../utils/fetch";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../../redux/auth/actions"
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -27,13 +28,9 @@ export const Login = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `${config.api_host_dev}/cms/auth/signin`,
-        form
-      );
-      
-      // console.log(response.data.data.token);
-      localStorage.setItem('token', response.data.data.token)
+      const response = await postData(`/cms/auth/signin`, form);
+
+      dispatch(userLogin(response.data.data.token, response.data.data.role))
       setIsLoading(false);
       navigate("/dashboard");
     } catch (error) {
@@ -45,10 +42,6 @@ export const Login = () => {
       });
     }
   };
-
-  if(token){
-    return <Navigate to="/dashboard" replace="true" />
-  }
 
   return (
     <Container md={12}>

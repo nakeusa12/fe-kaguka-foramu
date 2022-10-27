@@ -1,6 +1,6 @@
 import axios from 'axios';
 import handleError from './handleError';
-import { config } from '../configs';
+import { config } from '../config';
 
 export async function getData(url, params) {
   try {

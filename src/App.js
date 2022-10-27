@@ -6,12 +6,17 @@ import { Categories } from "./pages/Categories";
 import CategoryCreate from "./pages/Categories/create";
 import CategoryEdit from "./pages/Categories/edit";
 import ComponentNavbar from "./components/Navbar";
+import { listen } from "./redux/listener";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    listen();
+  }, []);
   return (
     <>
       <Router>
-    <ComponentNavbar />
+        <ComponentNavbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />

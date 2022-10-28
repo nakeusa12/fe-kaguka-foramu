@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-import Orders from '../pages/orders';
+import Orders from '../pages/Orders';
 
 export function OrdersRoute() {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Spinner, Table } from "react-bootstrap";
-// import Pagination from '../Pagination';
+import Pagination from '../Pagination';
 import { useNavigate } from "react-router-dom";
 import { KagukaButton } from "../Button";
 import { config } from "../../config";
@@ -33,11 +33,11 @@ function TableWithAction({
           customAction={customAction}
         />
       </Table>
-      {/* {!withoutPagination && data.length ? (
+      {!withoutPagination && data.length ? (
         <Pagination pages={pages} handlePageClick={handlePageClick} />
       ) : (
         ''
-      )} */}
+      )}
     </>
   );
 }

@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import AlertMessage from '../../components/Alert';
+import ComponentBreadCrumb from '../../components/BreadCrumb';
 import Form from './form';
-import { postData } from '../../utils/fetch';
-import { useNavigate } from 'react-router-dom';
+import { getData, postData, putData } from '../../utils/fetch';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setNotif } from '../../redux/notif/actions';
-import ComponentBreadCrumb from "../../components/BreadCrumb"
 
-function TalentsCreate() {
+function PaymentsEdit() {
+  const { paymentId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form, setForm] = useState({
-    name: '',
+    type: '',
     role: '',
     file: '',
     avatar: '',
@@ -26,7 +27,22 @@ function TalentsCreate() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Image langsung HIT API supaya website tidak lambat
+  const fetchOnePayments = async () => {
+    const res = await getData(`/cms/payments/${paymentId}`);
+    setForm({
+      ...form,
+      type: res.data.data.type,
+      role: res.data.data.role,
+      avatar: res.data.data.image.name,
+      file: res.data.data.image._id,
+    });
+  };
+
+  useEffect(() => {
+    fetchOnePayments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const uploadImage = async (file) => {
     let formData = new FormData();
     formData.append('avatar', file);
@@ -88,19 +104,19 @@ function TalentsCreate() {
     const payload = {
       image: form.file,
       role: form.role,
-      name: form.name,
+      type: form.type,
     };
 
-    const res = await postData('/cms/talents', payload);
+    const res = await putData(`/cms/payments/${paymentId}`, payload);
     if (res.data.data) {
       dispatch(
         setNotif(
           true,
           'success',
-          `berhasil tambah talents ${res.data.data.name}`
+          `berhasil ubah payments ${res.data.data.type}`
         )
       );
-      navigate('/talents');
+      navigate('/payments');
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -116,9 +132,9 @@ function TalentsCreate() {
   return (
     <Container>
       <ComponentBreadCrumb
-        textSecound={'Talents'}
-        urlSecound={'/talents'}
-        textThird='Create'
+        textSecound={'Payments'}
+        urlSecound={'/payments'}
+        textThird='Edit'
       />
       {alert.status && <AlertMessage type={alert.type} message={alert.message} />}
       <Form
@@ -126,9 +142,10 @@ function TalentsCreate() {
         isLoading={isLoading}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        edit
       />
     </Container>
   );
 }
 
-export default TalentsCreate;
+export default PaymentsEdit;

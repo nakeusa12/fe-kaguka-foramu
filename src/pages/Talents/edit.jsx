@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import ComponentBreadCrumb from "../../components/BreadCrumb"
-import SAlert from '../../components/Alert';
+import AlertMessage from '../../components/Alert';
 import Form from './form';
 import { getData, postData, putData } from '../../utils/fetch';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -133,7 +133,7 @@ function TalentsEdit() {
         urlSecound={'/talents'}
         textThird='Edit'
       />
-      {alert.status && <SAlert type={alert.type} message={alert.message} />}
+      {alert.status && <AlertMessage type={alert.type} message={alert.message} />}
       <Form
         form={form}
         isLoading={isLoading}

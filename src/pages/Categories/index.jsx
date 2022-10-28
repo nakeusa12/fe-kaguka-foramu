@@ -6,17 +6,17 @@ import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/actions';
 // import Swal from 'sweetalert2';
-import { deleteData } from '../../utils/fetch';
+// import { deleteData } from '../../utils/fetch';
 // import { setNotif } from '../../redux/notif/actions';
 import { accessCategories } from '../../utils/access';
-import AlertMessage from '../../components/Alert';
 import ComponentBreadCrumb from '../../components/BreadCrumb';
+import AlertMessage from '../../components/Alert';
 
 export const Categories = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const notif = useSelector((state) => state.notif);
+  const notif = useSelector((state) => state.notif);
   const categories = useSelector((state) => state.categories);
   const [access, setAccess] = useState({
     tambah: false,
@@ -83,9 +83,9 @@ export const Categories = () => {
         </KagukaButton>
       )}
 
-      {/* {notif.status && (
+      {notif.status && (
         <AlertMessage type={notif.typeNotif} message={notif.message} />
-      )} */}
+      )}
 
       <Table
         status={categories.status}

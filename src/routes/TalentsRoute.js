@@ -1,15 +1,15 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 
-import Talents from '../pages/talents';
-import Create from '../pages/talents/create';
-import Edit from '../pages/talents/edit';
+import { TalentsPage } from "../pages/Talents";
+import Create from "../pages/Talents/create";
+import Edit from "../pages/Talents/edit";
 
 export function TalentsRoute() {
   return (
     <Routes>
-      <Route path='/' element={<Talents />} />
-      <Route path='/create' element={<Create />} />
-      <Route path='/edit/:talentId' element={<Edit />} />
+      <Route path="/" element={<TalentsPage />} />
+      <Route path="/create" element={<Create />} />
+      <Route path="/edit/:talentId" element={<Edit />} />
     </Routes>
   );
 }

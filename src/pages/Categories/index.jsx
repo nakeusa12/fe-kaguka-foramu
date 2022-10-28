@@ -1,85 +1,101 @@
-import React from "react";
-import { Container, Table } from "react-bootstrap";
-import { useNavigate, Navigate } from "react-router-dom";
-import { KagukaButton } from "../../components/Button";
-import ComponentBreadCrumb from "../../components/BreadCrumb";
-import { useEffect } from "react";
-import axios from "axios";
-import { config } from "../../config";
-import { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import React, { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { KagukaButton } from '../../components/Button';
+import Table from '../../components/TableWithAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '../../redux/categories/actions';
+// import Swal from 'sweetalert2';
+import { deleteData } from '../../utils/fetch';
+// import { setNotif } from '../../redux/notif/actions';
+import { accessCategories } from '../../utils/access';
+import AlertMessage from '../../components/Alert';
+import ComponentBreadCrumb from '../../components/BreadCrumb';
 
 export const Categories = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
 
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const notif = useSelector((state) => state.notif);
+  const categories = useSelector((state) => state.categories);
+  const [access, setAccess] = useState({
+    tambah: false,
+    hapus: false,
+    edit: false,
+  });
 
-  const getCategoriesAPI = async () => {
-    try {
-      const response = await axios.get(
-        `${config.api_host_dev}/cms/categories`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsLoading(false);
-      setData(response.data.data);
-    } catch (error) {
-      setIsLoading(true);
-      console.log(error);
-    }
+  const checkAccess = () => {
+    let { role } = localStorage.getItem('auth')
+      ? JSON.parse(localStorage.getItem('auth'))
+      : {};
+    const access = { tambah: false, hapus: false, edit: false };
+    Object.keys(accessCategories).forEach(function (key, index) {
+      if (accessCategories[key].indexOf(role) >= 0) {
+        access[key] = true;
+      }
+    });
+    setAccess(access);
   };
 
   useEffect(() => {
-    getCategoriesAPI();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    checkAccess();
   }, []);
 
-  if (!token) {
-    return <Navigate to="/login" replace="true" />;
-  }
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    // Swal.fire({
+    //   title: 'Apa kamu yakin?',
+    //   text: 'Anda tidak akan dapat mengembalikan ini!',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Iya, Hapus',
+    //   cancelButtonText: 'Batal',
+    // }).then(async (result) => {
+    //   if (result.isConfirmed) {
+    //     const res = await deleteData(`/cms/categories/${id}`);
+    //     dispatch(
+    //       setNotif(
+    //         true,
+    //         'success',
+    //         `berhasil hapus kategori ${res.data.data.name}`
+    //       )
+    //     );
+    //     dispatch(fetchCategories());
+    //   }
+    // });
+  };
 
   return (
-    <>
-      <Container className="py-5">
-        <KagukaButton action={() => navigate("/categories/create")}>
+    <Container className='mt-3'>
+      <ComponentBreadCrumb textSecound={'Categories'} />
+
+      {access.tambah && (
+        <KagukaButton
+          className={'mb-3'}
+          action={() => navigate('/categories/create')}
+        >
           Tambah
         </KagukaButton>
-        <ComponentBreadCrumb textSecound={"Categories"} />
+      )}
 
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={data.length + 1} style={{ textAlign: "center" }}>
-                  <div className="flex items-center justify-center">
-                    <Spinner animation="border" variant="primary" />
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              data.map((data, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{data.name}</td>
-                  <td>Otto</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </Table>
-      </Container>
-    </>
+      {/* {notif.status && (
+        <AlertMessage type={notif.typeNotif} message={notif.message} />
+      )} */}
+
+      <Table
+        status={categories.status}
+        thead={['Nama', 'Aksi']}
+        data={categories.data}
+        tbody={['name']}
+        editUrl={access.edit ? `/categories/edit` : null}
+        deleteAction={access.hapus ? (id) => handleDelete(id) : null}
+        withoutPagination
+      />
+    </Container>
   );
-};
+}

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import BreadCrumb from '../../components/BreadCrumb';
-import Alert from '../../components/Alert';
+import AlertMessage from '../../components/Alert';
 import Form from './form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getData, putData } from '../../utils/fetch';
+import { useDispatch } from 'react-redux';
+import ComponentBreadCrumb from '../../components/BreadCrumb';
+// import { setNotif } from '../../redux/notif/actions';
 
 function CategoryEdit() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { categoryId } = useParams();
   const [form, setForm] = useState({
     name: '',
@@ -24,41 +28,49 @@ function CategoryEdit() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const fetchOneCategories = async () => {
-    // const res = await getData(`api/v1/categories/${categoryId}`);
+  const fetchOneCategories = async () => {
+    const res = await getData(`/cms/categories/${categoryId}`);
 
-    // setForm({ ...form, name: res.data.data.name });
-  // };
+    setForm({ ...form, name: res.data.data.name });
+  };
 
-  // useEffect(() => {
-  //   fetchOneCategories();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    fetchOneCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
-      // const res = await putData(`api/v1/categories/${categoryId}`, form);
+    const res = await putData(`/cms/categories/${categoryId}`, form);
+    if (res?.data?.data) {
+      // dispatch(
+      //   setNotif(
+      //     true,
+      //     'success',
+      //     `berhasil ubah kategori ${res.data.data.name}`
+      //   )
+      // );
       navigate('/categories');
       setIsLoading(false);
-    } catch (err) {
+    } else {
       setIsLoading(false);
       setAlert({
         ...alert,
         status: true,
         type: 'danger',
-        message: err.response.data.msg,
+        message: res.response.data.msg,
       });
     }
   };
+
   return (
-    <Container>
-      <BreadCrumb
+    <Container className='mt-3'>
+      <ComponentBreadCrumb
         textSecound={'Categories'}
         urlSecound={'/categories'}
         textThird='Edit'
       />
-      {alert.status && <Alert type={alert.type} message={alert.message} />}
+      {alert.status && <AlertMessage type={alert.type} message={alert.message} />}
       <Form
         edit
         form={form}

@@ -7,7 +7,7 @@ import {
   
   import thunk from 'redux-thunk';
   import authReducer from './auth/reducer';
-//   import categoriesReducer from './categories/reducer';
+  import categoriesReducer from './categories/reducer';
 //   import notifReducer from './notif/reducer';
 //   import talentsReducer from './talents/reducer';
 //   import paymentsReducer from './payments/reducer';
@@ -19,7 +19,7 @@ import {
   
   const rootReducers = combineReducers({
     auth: authReducer,
-    // categories: categoriesReducer,
+    categories: categoriesReducer,
     // notif: notifReducer,
     // talents: talentsReducer,
     // payments: paymentsReducer,

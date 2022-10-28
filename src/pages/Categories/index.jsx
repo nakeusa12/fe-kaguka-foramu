@@ -5,9 +5,9 @@ import { KagukaButton } from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/actions';
-// import Swal from 'sweetalert2';
-// import { deleteData } from '../../utils/fetch';
-// import { setNotif } from '../../redux/notif/actions';
+import Swal from 'sweetalert2';
+import { deleteData } from '../../utils/fetch';
+import { setNotif } from '../../redux/notif/actions';
 import { accessCategories } from '../../utils/access';
 import ComponentBreadCrumb from '../../components/BreadCrumb';
 import AlertMessage from '../../components/Alert';
@@ -46,28 +46,28 @@ export const Categories = () => {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    // Swal.fire({
-    //   title: 'Apa kamu yakin?',
-    //   text: 'Anda tidak akan dapat mengembalikan ini!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Iya, Hapus',
-    //   cancelButtonText: 'Batal',
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     const res = await deleteData(`/cms/categories/${id}`);
-    //     dispatch(
-    //       setNotif(
-    //         true,
-    //         'success',
-    //         `berhasil hapus kategori ${res.data.data.name}`
-    //       )
-    //     );
-    //     dispatch(fetchCategories());
-    //   }
-    // });
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: 'Anda tidak akan dapat mengembalikan ini!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, Hapus',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteData(`/cms/categories/${id}`);
+        dispatch(
+          setNotif(
+            true,
+            'success',
+            `berhasil hapus kategori ${res.data.data.name}`
+          )
+        );
+        dispatch(fetchCategories());
+      }
+    });
   };
 
   return (

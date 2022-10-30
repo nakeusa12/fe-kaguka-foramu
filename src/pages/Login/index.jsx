@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FormSignin } from "./form";
 import { postData } from "../../utils/fetch";
 import { useDispatch } from "react-redux";
-import { userLogin } from "../../redux/auth/actions"
+import { userLogin } from "../../redux/auth/actions";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -27,18 +27,26 @@ export const Login = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
-      const response = await postData(`/cms/auth/signin`, form);
 
-      dispatch(userLogin(response.data.data.token, response.data.data.role))
+    const response = await postData(`/cms/auth/signin`, form);
+    if (response?.data?.data) {
+      dispatch(
+        userLogin(
+          response.data.data.token,
+          response.data.data.role,
+          response.data.data.refreshToken,
+          response.data.data.email
+        )
+      );
+
       setIsLoading(false);
       navigate("/dashboard");
-    } catch (error) {
+    } else {
       setIsLoading(false);
       setAlert({
         status: true,
         type: "danger",
-        message: error?.response?.data?.msg ?? "Internar Server Error",
+        message: response?.response?.data?.msg ?? "Internal Server Error",
       });
     }
   };

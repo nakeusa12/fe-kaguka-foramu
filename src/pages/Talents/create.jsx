@@ -92,7 +92,7 @@ function TalentsCreate() {
     };
 
     const res = await postData('/cms/talents', payload);
-    if (res.data.data) {
+    if (res?.data?.data) {
       dispatch(
         setNotif(
           true,

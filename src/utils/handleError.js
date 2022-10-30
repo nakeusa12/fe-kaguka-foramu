@@ -20,7 +20,7 @@ const handleError = (error) => {
             token: res.data.data.token,
           })
         );
-        originalRequest.headers.authorization = `Bearer ${res.data.data.token}`;
+        originalRequest.headers.Authorization = `Bearer ${res.data.data.token}`;
 
         return axios(originalRequest);
       })

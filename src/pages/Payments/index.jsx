@@ -72,7 +72,7 @@ export const PaymentsPage = () => {
       }
     });
   };
-
+  
   return (
     <Container className='mt-3'>
       <ComponentBreadCrumb textSecound={'Payments'} />

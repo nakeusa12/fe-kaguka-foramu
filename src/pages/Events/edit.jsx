@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import AlertMessage from '../../components/Alert';
 import ComponentBreadCrumb from '../../components/BreadCrumb';
 import Form from './form';
 import { getData, postData, putData } from '../../utils/fetch';
@@ -12,6 +11,7 @@ import {
   fetchListTalents,
 } from '../../redux/lists/actions';
 import moment from 'moment';
+import AlertMessage from '../../components/Alert';
 
 function EventsCreate() {
   const navigate = useNavigate();
@@ -160,7 +160,7 @@ function EventsCreate() {
     };
 
     const res = await putData(`/cms/events/${eventId}`, payload);
-    if (res?.data?.data) {
+    if (res.data.data) {
       dispatch(
         setNotif(true, 'success', `berhasil ubah events ${res.data.data.title}`)
       );

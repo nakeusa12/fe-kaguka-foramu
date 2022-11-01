@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import AlertMessage from '../../components/Alert';
 import ComponentBreadCrumb from '../../components/BreadCrumb';
 import Form from './form';
 import { postData } from '../../utils/fetch';
@@ -11,6 +10,7 @@ import {
   fetchListCategories,
   fetchListTalents,
 } from '../../redux/lists/actions';
+import AlertMessage from '../../components/Alert';
 
 function EventsCreate() {
   const navigate = useNavigate();
@@ -131,7 +131,7 @@ function EventsCreate() {
 
     const res = await postData('/cms/events', payload);
 
-    if (res?.data?.data) {
+    if (res.data.data) {
       dispatch(
         setNotif(
           true,

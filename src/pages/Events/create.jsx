@@ -24,6 +24,7 @@ function EventsCreate() {
     avatar: '',
     about: '',
     venueName: '',
+    mapsCity: '',
     tagline: '',
     keyPoint: [''],
     tickets: [
@@ -121,6 +122,7 @@ function EventsCreate() {
       price: form.price,
       about: form.about,
       venueName: form.venueName,
+      mapsCity: form.mapsCity,
       tagline: form.tagline,
       keyPoint: form.keyPoint,
       category: form.category.value,

@@ -25,6 +25,7 @@ function EventsCreate() {
     avatar: '',
     about: '',
     venueName: '',
+    mapsCity: '',
     tagline: '',
     keyPoint: [''],
     tickets: [
@@ -58,6 +59,7 @@ function EventsCreate() {
       avatar: res.data.data.image.name,
       about: res.data.data.about,
       venueName: res.data.data.venueName,
+      mapsCity: res.data.data.mapsCity,
       tagline: res.data.data.tagline,
       keyPoint: res.data.data.keyPoint,
       category: {
@@ -151,6 +153,7 @@ function EventsCreate() {
       price: form.price,
       about: form.about,
       venueName: form.venueName,
+      mapsCity: form.mapsCity,
       tagline: form.tagline,
       keyPoint: form.keyPoint,
       category: form.category.value,

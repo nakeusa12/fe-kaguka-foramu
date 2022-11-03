@@ -76,14 +76,18 @@ export default function EventsForm({
       </Row>
       <Row>
         <Col>
-          <TextInputWithLabel
-            placeholder={"Masukan about"}
-            label={"About"}
-            name="about"
-            value={form.about}
-            type="text"
-            onChange={handleChange}
-          />
+          <label for="about">Deskripsi</label>
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              placeholder="Masukan Deskripsi"
+              id="about"
+              name="about"
+              value={form.about}
+              onChange={handleChange}
+              style={{ height: "120px", marginTop: "0.5rem" }}
+            ></textarea>
+          </div>
         </Col>
         <Col>
           <TextInputWithLabel
@@ -91,6 +95,14 @@ export default function EventsForm({
             label={"Tempat acara"}
             name="venueName"
             value={form.venueName}
+            type="text"
+            onChange={handleChange}
+          />
+          <TextInputWithLabel
+            placeholder={"Masukan map lokasi"}
+            label={"Map Lokasi"}
+            name="mapsCity"
+            value={form.mapsCity}
             type="text"
             onChange={handleChange}
           />
